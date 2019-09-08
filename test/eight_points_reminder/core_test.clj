@@ -5,6 +5,7 @@
 (require '[clojure.test.check.generators :as gen])
 (require '[clojure.test.check.properties :as prop])
 (require '[clojure.test.check.clojure-test :refer [defspec]])
+(import '(java.time LocalDate))
 
 (def gen-date
   (gen/fmap (fn [[year day]]
@@ -26,7 +27,12 @@
 (defspec always-generate-a-deterministic-positive-integer-prop
   (prop/for-all [seed  gen/int
                  seed2 gen/int]
-    (and (pos? (pseudo-random seed)
-          (= (pseudo-random seed) (pseudo-random seed))
-          (or (= seed seed2)
-              (not= (pseudo-random seed) (pseudo-random seed2)))))))
+    (and (pos? (pseudo-random seed))
+         (= (pseudo-random seed) (pseudo-random seed))
+         (or (= seed seed2)
+             (not= (pseudo-random seed) (pseudo-random seed2))))))
+
+(defspec always-works-prop
+  (prop/for-all [date  gen/date
+                 hour  gen/nat]
+    (bool? (send-reminder? date hour))))

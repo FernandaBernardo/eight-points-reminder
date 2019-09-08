@@ -6,6 +6,7 @@
 (import '(java.util Date))
 (import '(java.time LocalDate))
 (import '(java.time LocalDateTime))
+(import '(java.time.format DateTimeFormatter))
 (import '(java.time ZoneId))
 
 (defn pseudo-random
@@ -36,13 +37,12 @@
 
 (def webhook "https://maker.ifttt.com/trigger/eight_points_reminder/with/key/fq2eLYq92Lzwo32iilhV5JgXvZYrgk8ct-9SsrGSL_6")
 
-(defn -main [& args]
-  (let [time  (LocalDateTime/now)
-        today (LocalDate/now)
+(defn -main [time-str & args]
+  (let [time  (LocalDateTime/parse time-str)
+        today (.toLocalDate time)
         hour  (.getHour time)]
+    (println "I'm working :D " time-str)
     (when (send-reminder? today hour)
       (do
-       (println "Sending reminder!")
-       (http/post webhook)))))
-
--main
+        (println "Sending reminder!")
+        @(http/post webhook)))))
