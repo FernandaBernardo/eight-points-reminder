@@ -14,7 +14,7 @@
   (Math/abs (.nextInt (java.util.Random. seed))))
 
 (defn choose-day [seed]
-  (+ (mod seed 5) 2))
+  (+ (mod seed 5) 1))
 
 (defn week-of-year
   [date]

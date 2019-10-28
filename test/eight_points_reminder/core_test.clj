@@ -22,7 +22,7 @@
 
 (defspec always-generate-a-working-day-of-the-week-prop
   (prop/for-all [seed gen/nat]
-    (#{2 3 4 5 6} (choose-day seed))))
+    (#{1 2 3 4 5} (choose-day seed))))
 
 (defspec always-generate-a-deterministic-positive-integer-prop
   (prop/for-all [seed  gen/int
@@ -33,6 +33,6 @@
              (not= (pseudo-random seed) (pseudo-random seed2))))))
 
 (defspec always-works-prop
-  (prop/for-all [date  gen/date
+  (prop/for-all [date  gen-date
                  hour  gen/nat]
-    (bool? (send-reminder? date hour))))
+    (send-reminder? date hour)))
